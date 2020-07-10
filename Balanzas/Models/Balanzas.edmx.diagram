@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9450e0eccf454a2ca4119f8d9c7ec3ed" Name="Balanzas">
+        <EntityTypeShape EntityType="BalanzasModel.Dispositivo" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BalanzasModel.Lectura" Width="1.5" PointX="7.5" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BalanzasModel.SystemLog" Width="1.5" PointX="0.5" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="BalanzasModel.FK_Lecturas_Dispositivos" ManuallyRouted="false" />
+        <AssociationConnector Association="BalanzasModel.FK_SystemLog_Dispositivo" />
+        <EntityTypeShape EntityType="BalanzasModel.Driver" Width="1.5" PointX="2.625" PointY="1.75" />
+        <AssociationConnector Association="BalanzasModel.FK_Dispositivo_Driver" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

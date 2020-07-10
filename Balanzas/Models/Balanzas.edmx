@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BalanzasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Dispositivo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Puesto" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Ubicacion" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="URI" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Habilitado" Type="bit" Nullable="false" />
+          <Property Name="DriverId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Habilitado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lectura">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DatoLeido" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="DatoDespachado" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="TimePrint" Type="datetime" Nullable="false" />
+          <Property Name="DispositivoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SystemLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nivel" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Error" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DispositivoId" Type="int" />
+          <Property Name="TimePrint" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Dispositivo_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="1" />
+          <End Role="Dispositivo" Type="Self.Dispositivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dispositivo">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lecturas_Dispositivos">
+          <End Role="Dispositivo" Type="Self.Dispositivo" Multiplicity="1" />
+          <End Role="Lectura" Type="Self.Lectura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispositivo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lectura">
+              <PropertyRef Name="DispositivoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SystemLog_Dispositivo">
+          <End Role="Dispositivo" Type="Self.Dispositivo" Multiplicity="0..1" />
+          <End Role="SystemLog" Type="Self.SystemLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispositivo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SystemLog">
+              <PropertyRef Name="DispositivoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BalanzasModelStoreContainer">
+          <EntitySet Name="Dispositivo" EntityType="Self.Dispositivo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lectura" EntityType="Self.Lectura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemLog" EntityType="Self.SystemLog" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dispositivo_Driver" Association="Self.FK_Dispositivo_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Dispositivo" EntitySet="Dispositivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lecturas_Dispositivos" Association="Self.FK_Lecturas_Dispositivos">
+            <End Role="Dispositivo" EntitySet="Dispositivo" />
+            <End Role="Lectura" EntitySet="Lectura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemLog_Dispositivo" Association="Self.FK_SystemLog_Dispositivo">
+            <End Role="Dispositivo" EntitySet="Dispositivo" />
+            <End Role="SystemLog" EntitySet="SystemLog" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BalanzasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Dispositivo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Puesto" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ubicacion" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="URI" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Habilitado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Lecturas" Relationship="Self.FK_Lecturas_Dispositivos" FromRole="Dispositivo" ToRole="Lectura" />
+          <NavigationProperty Name="SystemLogs" Relationship="BalanzasModel.FK_SystemLog_Dispositivo" FromRole="Dispositivo" ToRole="SystemLog" />
+          <Property Name="DriverId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Driver" Relationship="BalanzasModel.FK_Dispositivo_Driver" FromRole="Dispositivo" ToRole="Driver" />
+        </EntityType>
+        <EntityType Name="Lectura">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DatoLeido" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DatoDespachado" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TimePrint" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DispositivoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dispositivo" Relationship="Self.FK_Lecturas_Dispositivos" FromRole="Lectura" ToRole="Dispositivo" />
+        </EntityType>
+        <EntityType Name="SystemLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nivel" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DispositivoId" Type="Int32" />
+          <Property Name="TimePrint" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Dispositivo" Relationship="BalanzasModel.FK_SystemLog_Dispositivo" FromRole="SystemLog" ToRole="Dispositivo" />
+        </EntityType>
+        <Association Name="FK_Lecturas_Dispositivos">
+          <End Role="Dispositivo" Type="Self.Dispositivo" Multiplicity="1" />
+          <End Role="Lectura" Type="Self.Lectura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispositivo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lectura">
+              <PropertyRef Name="DispositivoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BalanzasEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dispositivos" EntityType="Self.Dispositivo" />
+          <EntitySet Name="Lecturas" EntityType="Self.Lectura" />
+          <EntitySet Name="SystemLogs" EntityType="Self.SystemLog" />
+          <AssociationSet Name="FK_Lecturas_Dispositivos" Association="Self.FK_Lecturas_Dispositivos">
+            <End Role="Dispositivo" EntitySet="Dispositivos" />
+            <End Role="Lectura" EntitySet="Lecturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemLog_Dispositivo" Association="BalanzasModel.FK_SystemLog_Dispositivo">
+            <End Role="Dispositivo" EntitySet="Dispositivos" />
+            <End Role="SystemLog" EntitySet="SystemLogs" />
+          </AssociationSet>
+          <EntitySet Name="Drivers" EntityType="BalanzasModel.Driver" />
+          <AssociationSet Name="FK_Dispositivo_Driver" Association="BalanzasModel.FK_Dispositivo_Driver">
+            <End Role="Driver" EntitySet="Drivers" />
+            <End Role="Dispositivo" EntitySet="Dispositivos" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_SystemLog_Dispositivo">
+          <End Type="BalanzasModel.Dispositivo" Role="Dispositivo" Multiplicity="0..1" />
+          <End Type="BalanzasModel.SystemLog" Role="SystemLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dispositivo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SystemLog">
+              <PropertyRef Name="DispositivoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Habilitado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Dispositivos" Relationship="BalanzasModel.FK_Dispositivo_Driver" FromRole="Driver" ToRole="Dispositivo" />
+        </EntityType>
+        <Association Name="FK_Dispositivo_Driver">
+          <End Type="BalanzasModel.Driver" Role="Driver" Multiplicity="1" />
+          <End Type="BalanzasModel.Dispositivo" Role="Dispositivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dispositivo">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BalanzasModelStoreContainer" CdmEntityContainer="BalanzasEntities">
+          <EntitySetMapping Name="Dispositivos">
+            <EntityTypeMapping TypeName="BalanzasModel.Dispositivo">
+              <MappingFragment StoreEntitySet="Dispositivo">
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="Ubicacion" ColumnName="Ubicacion" />
+                <ScalarProperty Name="URI" ColumnName="URI" />
+                <ScalarProperty Name="Habilitado" ColumnName="Habilitado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lecturas">
+            <EntityTypeMapping TypeName="BalanzasModel.Lectura">
+              <MappingFragment StoreEntitySet="Lectura">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DatoLeido" ColumnName="DatoLeido" />
+                <ScalarProperty Name="DatoDespachado" ColumnName="DatoDespachado" />
+                <ScalarProperty Name="TimePrint" ColumnName="TimePrint" />
+                <ScalarProperty Name="DispositivoId" ColumnName="DispositivoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemLogs">
+            <EntityTypeMapping TypeName="BalanzasModel.SystemLog">
+              <MappingFragment StoreEntitySet="SystemLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
+                <ScalarProperty Name="DispositivoId" ColumnName="DispositivoId" />
+                <ScalarProperty Name="TimePrint" ColumnName="TimePrint" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drivers">
+            <EntityTypeMapping TypeName="BalanzasModel.Driver">
+              <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="Habilitado" ColumnName="Habilitado" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
