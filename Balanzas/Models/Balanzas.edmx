@@ -44,6 +44,7 @@
           <Property Name="Error" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DispositivoId" Type="int" />
           <Property Name="TimePrint" Type="datetime" Nullable="false" />
+          <Property Name="RawData" Type="varchar" MaxLength="1000" Nullable="false" />
         </EntityType>
         <Association Name="FK_Dispositivo_Driver">
           <End Role="Driver" Type="Self.Driver" Multiplicity="1" />
@@ -138,6 +139,7 @@
           <Property Name="DispositivoId" Type="Int32" />
           <Property Name="TimePrint" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Dispositivo" Relationship="BalanzasModel.FK_SystemLog_Dispositivo" FromRole="SystemLog" ToRole="Dispositivo" />
+          <Property Name="RawData" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_Lecturas_Dispositivos">
           <End Role="Dispositivo" Type="Self.Dispositivo" Multiplicity="1" />
@@ -235,6 +237,7 @@
           <EntitySetMapping Name="SystemLogs">
             <EntityTypeMapping TypeName="BalanzasModel.SystemLog">
               <MappingFragment StoreEntitySet="SystemLog">
+                <ScalarProperty Name="RawData" ColumnName="RawData" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nivel" ColumnName="Nivel" />
                 <ScalarProperty Name="Error" ColumnName="Error" />

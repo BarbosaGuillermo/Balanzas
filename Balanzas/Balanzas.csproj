@@ -158,6 +158,7 @@
       <DependentUpon>Balanzas.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DatoLeido.cs" />
+    <Compile Include="Models\SysLogger.cs" />
     <Compile Include="Models\DeviceQuery.cs" />
     <Compile Include="Models\Dispositivo.cs">
       <DependentUpon>Balanzas.tt</DependentUpon>
@@ -165,6 +166,7 @@
     <Compile Include="Models\Driver.cs">
       <DependentUpon>Balanzas.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Drivers\RawSocketDriver.cs" />
     <Compile Include="Models\Drivers\DriverFactory.cs" />
     <Compile Include="Models\Drivers\DatabaseDriver.cs" />
     <Compile Include="Models\Drivers\DummyDriver.cs" />

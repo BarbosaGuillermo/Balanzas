@@ -19,6 +19,7 @@ namespace Balanzas.Models
         public string Error { get; set; }
         public Nullable<int> DispositivoId { get; set; }
         public System.DateTime TimePrint { get; set; }
+        public string RawData { get; set; }
     
         public virtual Dispositivo Dispositivo { get; set; }
     }

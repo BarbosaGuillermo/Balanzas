@@ -16,6 +16,7 @@
             container.Register(Classes.FromThisAssembly().BasedOn<IDriver>().WithService.AllInterfaces().LifestyleTransient());
             container.Register(Component.For<DriverFactory>().LifeStyle.Transient);
             container.Register(Component.For<DeviceQuery>().LifeStyle.Transient);
+            container.Register(Component.For<SysLogger>().LifeStyle.Transient);
         }
     }
 }
