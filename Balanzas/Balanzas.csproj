@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Infrastructure\Installers\ControllersInstaller.cs" />
     <Compile Include="Infrastructure\Installers\ServiceInstallers.cs" />
+    <Compile Include="Infrastructure\TextTools.cs" />
     <Compile Include="Infrastructure\WindsorControllerFactory.cs" />
     <Compile Include="Models\Balanzas.Context.cs">
       <AutoGen>True</AutoGen>
@@ -157,6 +158,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Balanzas.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataDecoder.cs">
+      <DependentUpon>Balanzas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DataDecoders\DataDecoderFactory.cs" />
+    <Compile Include="Models\DataDecoders\DoubleReadStripNonNumericCharsDataDecoder.cs" />
+    <Compile Include="Models\DataDecoders\DivideByTenStripNonNumericCharsDataDecoder.cs" />
+    <Compile Include="Models\DataDecoders\StripNonNumericCharsDataDecoder.cs" />
+    <Compile Include="Models\DataDecoders\DummyDataDecoder.cs" />
+    <Compile Include="Models\DataDecoders\IDataDecoder.cs" />
     <Compile Include="Models\DatoLeido.cs" />
     <Compile Include="Models\SysLogger.cs" />
     <Compile Include="Models\DeviceQuery.cs" />

@@ -12,28 +12,20 @@ namespace Balanzas.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Dispositivo
+    public partial class DataDecoder
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Dispositivo()
+        public DataDecoder()
         {
-            this.Lecturas = new HashSet<Lectura>();
-            this.SystemLogs = new HashSet<SystemLog>();
+            this.Dispositivos = new HashSet<Dispositivo>();
         }
     
         public int Id { get; set; }
-        public string Puesto { get; set; }
-        public string Ubicacion { get; set; }
-        public string URI { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
         public bool Habilitado { get; set; }
-        public int DriverId { get; set; }
-        public int DataDecoderId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Lectura> Lecturas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SystemLog> SystemLogs { get; set; }
-        public virtual Driver Driver { get; set; }
-        public virtual DataDecoder DataDecoder { get; set; }
+        public virtual ICollection<Dispositivo> Dispositivos { get; set; }
     }
 }

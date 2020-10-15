@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="BalanzasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DataDecoder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Habilitado" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Dispositivo">
           <Key>
             <PropertyRef Name="Id" />
@@ -15,6 +24,7 @@
           <Property Name="URI" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Habilitado" Type="bit" Nullable="false" />
           <Property Name="DriverId" Type="int" Nullable="false" />
+          <Property Name="DataDecoderId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Driver">
           <Key>
@@ -46,6 +56,18 @@
           <Property Name="TimePrint" Type="datetime" Nullable="false" />
           <Property Name="RawData" Type="varchar" MaxLength="1000" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Dispositivo_DataDecoder">
+          <End Role="DataDecoder" Type="Self.DataDecoder" Multiplicity="1" />
+          <End Role="Dispositivo" Type="Self.Dispositivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataDecoder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dispositivo">
+              <PropertyRef Name="DataDecoderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Dispositivo_Driver">
           <End Role="Driver" Type="Self.Driver" Multiplicity="1" />
           <End Role="Dispositivo" Type="Self.Dispositivo" Multiplicity="*" />
@@ -83,10 +105,15 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BalanzasModelStoreContainer">
+          <EntitySet Name="DataDecoder" EntityType="Self.DataDecoder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dispositivo" EntityType="Self.Dispositivo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lectura" EntityType="Self.Lectura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemLog" EntityType="Self.SystemLog" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dispositivo_DataDecoder" Association="Self.FK_Dispositivo_DataDecoder">
+            <End Role="DataDecoder" EntitySet="DataDecoder" />
+            <End Role="Dispositivo" EntitySet="Dispositivo" />
+          </AssociationSet>
           <AssociationSet Name="FK_Dispositivo_Driver" Association="Self.FK_Dispositivo_Driver">
             <End Role="Driver" EntitySet="Driver" />
             <End Role="Dispositivo" EntitySet="Dispositivo" />
@@ -117,6 +144,8 @@
           <NavigationProperty Name="SystemLogs" Relationship="BalanzasModel.FK_SystemLog_Dispositivo" FromRole="Dispositivo" ToRole="SystemLog" />
           <Property Name="DriverId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Driver" Relationship="BalanzasModel.FK_Dispositivo_Driver" FromRole="Dispositivo" ToRole="Driver" />
+          <Property Name="DataDecoderId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DataDecoder" Relationship="BalanzasModel.FK_Dispositivo_DataDecoder" FromRole="Dispositivo" ToRole="DataDecoder" />
         </EntityType>
         <EntityType Name="Lectura">
           <Key>
@@ -170,6 +199,11 @@
             <End Role="Driver" EntitySet="Drivers" />
             <End Role="Dispositivo" EntitySet="Dispositivos" />
           </AssociationSet>
+          <EntitySet Name="DataDecoders" EntityType="BalanzasModel.DataDecoder" />
+          <AssociationSet Name="FK_Dispositivo_DataDecoder" Association="BalanzasModel.FK_Dispositivo_DataDecoder">
+            <End Role="DataDecoder" EntitySet="DataDecoders" />
+            <End Role="Dispositivo" EntitySet="Dispositivos" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_SystemLog_Dispositivo">
           <End Type="BalanzasModel.Dispositivo" Role="Dispositivo" Multiplicity="0..1" />
@@ -205,6 +239,28 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DataDecoder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Habilitado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Dispositivos" Relationship="BalanzasModel.FK_Dispositivo_DataDecoder" FromRole="DataDecoder" ToRole="Dispositivo" />
+        </EntityType>
+        <Association Name="FK_Dispositivo_DataDecoder">
+          <End Type="BalanzasModel.DataDecoder" Role="DataDecoder" Multiplicity="1" />
+          <End Type="BalanzasModel.Dispositivo" Role="Dispositivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataDecoder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dispositivo">
+              <PropertyRef Name="DataDecoderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -214,6 +270,7 @@
           <EntitySetMapping Name="Dispositivos">
             <EntityTypeMapping TypeName="BalanzasModel.Dispositivo">
               <MappingFragment StoreEntitySet="Dispositivo">
+                <ScalarProperty Name="DataDecoderId" ColumnName="DataDecoderId" />
                 <ScalarProperty Name="DriverId" ColumnName="DriverId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Puesto" ColumnName="Puesto" />
@@ -249,6 +306,16 @@
           <EntitySetMapping Name="Drivers">
             <EntityTypeMapping TypeName="BalanzasModel.Driver">
               <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="Habilitado" ColumnName="Habilitado" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataDecoders">
+            <EntityTypeMapping TypeName="BalanzasModel.DataDecoder">
+              <MappingFragment StoreEntitySet="DataDecoder">
                 <ScalarProperty Name="Habilitado" ColumnName="Habilitado" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />

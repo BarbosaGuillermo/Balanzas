@@ -1,6 +1,7 @@
 ﻿namespace Balanzas.Models.Drivers
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Net.Sockets;
     using System.Text;
@@ -26,18 +27,36 @@
 
                 using (var client = new TcpClient(uri.Host, uri.Port))
                 {
-                    using (var stream = client.GetStream())
-                    {
-                        var data = new byte[256];
+                    client.ReceiveTimeout = 6000;
+                    client.SendTimeout = 6000;
 
-                        int bytes = stream.Read(data, 0, data.Length);
-                        var responseData = Encoding.ASCII.GetString(data, 0, bytes);
+                    using (var reader = new StreamReader(client.GetStream(), Encoding.UTF8))
+                    {
+                        string line;
+
+                        try
+                        {
+                            reader.BaseStream.ReadTimeout = 6000;
+                            line = reader.ReadLine();
+                        }
+                        catch (Exception ex)
+                        {
+                            client.GetStream().Close();
+                            client.Close();
+
+                            return new DatoLeido
+                            {
+                                DeviceLog = "Error",
+                                Error = true,
+                                Text = string.Format("Exception: {0}", ex)
+                            };
+                        }
 
                         return new DatoLeido
                         {
                             DeviceLog = "OK",
                             Error = false,
-                            Text = responseData
+                            Text = line
                         };
                     }
                 }

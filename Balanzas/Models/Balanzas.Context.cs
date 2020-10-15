@@ -29,5 +29,6 @@ namespace Balanzas.Models
         public virtual DbSet<Lectura> Lecturas { get; set; }
         public virtual DbSet<SystemLog> SystemLogs { get; set; }
         public virtual DbSet<Driver> Drivers { get; set; }
+        public virtual DbSet<DataDecoder> DataDecoders { get; set; }
     }
 }

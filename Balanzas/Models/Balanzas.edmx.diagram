@@ -12,6 +12,8 @@
         <AssociationConnector Association="BalanzasModel.FK_SystemLog_Dispositivo" />
         <EntityTypeShape EntityType="BalanzasModel.Driver" Width="1.5" PointX="2.625" PointY="1.75" />
         <AssociationConnector Association="BalanzasModel.FK_Dispositivo_Driver" />
+        <EntityTypeShape EntityType="BalanzasModel.DataDecoder" Width="1.5" PointX="0.5" PointY="3.625" />
+        <AssociationConnector Association="BalanzasModel.FK_Dispositivo_DataDecoder" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
